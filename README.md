@@ -42,6 +42,17 @@ cookieMaster.setCookieValue('http://<some host>:<some port>', '<cookie name>', '
 ```
 The cookie value should be formatted just like a regular <code>document.cookie</code> value.
 
+### Clear cookie by name
+```javascript
+cookieMaster.clearCookieByName('http://<some host>:<some port>', '<cookie name>',
+    function() {
+    console.log('Cookie has been cleared');
+    },
+    function() {
+        console.log('Cookie could not be cleared');
+    });
+```
+
 ### Clear all cookies
 ```javascript
 cookieMaster.clearCookies(

@@ -69,6 +69,28 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)clearCookieByName:(CDVInvokedUrlCommand*)command
+{
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+
+    CDVPluginResult* pluginResult = nil;
+    NSString* urlString = [command.arguments objectAtIndex:0];
+    NSString* name = [command.arguments objectAtIndex:1];
+
+    NSHTTPCookie *cookie = nil;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        NSDictionary *cookieProperties = [cookie properties];
+        NSString *cookieName = [cookieProperties objectForKey:NSHTTPCookieName];
+        if ([cookieName isEqualToString:name]) {
+            [storage deleteCookie:cookie];
+        }
+    }
+
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Clear cookie executed"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)clearCookies:(CDVInvokedUrlCommand*)command
 {
     NSHTTPCookie *cookie;
